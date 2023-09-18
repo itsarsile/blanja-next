@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id       Int        @id @default(autoincrement())
+  name     String?
+  products products[]
+}
+
+model products {
+  id            String         @id @db.Uuid
+  name          String
+  brand         String
+  description   String
+  price         Int
+  stock         Int
+  rating        Float?         @db.Real
+  store_id      Int?
+  category_id   Int?
+  categories    categories?    @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_category_id_categories_id_fk")
+  store_profile store_profile? @relation(fields: [store_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_store_id_store_profile_id_fk")
+  reviews       reviews[]
+}
+
+model store_profile {
+  id          Int        @id @default(autoincrement())
+  store_name  String
+  store_phone String
+  user_id     Int?
+  products    products[]
+  users       users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "store_profile_user_id_users_id_fk")
+}
+
+model users {
+  id                Int             @id @default(autoincrement())
+  email             String          @unique(map: "users_email_unique")
+  name              String?
+  password          String
+  verified          Boolean?        @default(false)
+  verification_code String          @unique(map: "users_verification_code_unique")
+  role              role?
+  store_profile     store_profile[]
+}
+
+model reviews {
+  id         Int       @id @default(autoincrement())
+  message    String
+  rating     Float
+  product_id String
+  product    products? @relation(fields: [product_id], references: [id], onDelete: Cascade)
+}
+
+enum role {
+  admin
+  seller
+  customer
+}
