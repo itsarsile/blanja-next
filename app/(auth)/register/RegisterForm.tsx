@@ -9,13 +9,32 @@ import {
   TextInput,
   rem,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import Image from "next/image";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 export default function RegisterForm() {
-  const [activeTab, setActiveTab] = useState<string | null>("customer")
-  console.log("🚀 ~ file: RegisterForm.tsx:18 ~ RegisterForm ~ activeTab:", activeTab)
+  const [activeTab, setActiveTab] = useState<string | null>("customer");
+
+  const form = useForm({
+    initialValues: {
+      email: "",
+      password: "",
+      storeName: "",
+      phoneNumber: "",
+      name: "",
+      role: "customer",
+    },
+  });
+
+  const onSubmit = form.onSubmit(async (values) => {
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/register/api`, values)
+      .then((response) => alert("Success! Register"))
+      .catch((error) => console.error(error));
+  });
 
   return (
     <Center className="h-screen">
@@ -23,7 +42,7 @@ export default function RegisterForm() {
         <Image src="/blanja.svg" alt="blanja-logo" width={135} height={50} />
         <Tabs
           unstyled
-          onTabChange={setActiveTab}
+          onTabChange={(value: any) => form.setFieldValue("role", value)}
           defaultValue={activeTab}
           styles={(theme) => ({
             tab: {
@@ -58,24 +77,25 @@ export default function RegisterForm() {
             </Tabs.List>
           </Center>
           <Center mt={rem(25)}>
-            <form>
+            <form onSubmit={onSubmit}>
               <Tabs.Panel value="customer">
                 <Stack>
-                  <TextInput placeholder="Email" className="w-96" />
-                  <PasswordInput placeholder="Password" className="w-96" />
+                  <TextInput placeholder="Email" className="w-96" {...form.getInputProps("email")}/>
+                  <PasswordInput placeholder="Password" className="w-96" {...form.getInputProps("password")}/>
                 </Stack>
               </Tabs.Panel>
               <Tabs.Panel value="seller">
                 <Stack>
-                  <TextInput placeholder="Name" className="w-96" />
-                  <TextInput placeholder="Email" className="w-96" />
-                  <TextInput placeholder="Phone number" className="w-96" />
-                  <TextInput placeholder="Store name" className="w-96" />
-                  <PasswordInput placeholder="Password" className="w-96" />
+                  <TextInput placeholder="Name" className="w-96" {...form.getInputProps("name")}/>
+                  <TextInput placeholder="Email" className="w-96" {...form.getInputProps("email")}/>
+                  <TextInput placeholder="Phone number" className="w-96" {...form.getInputProps("phoneNumber")}/>
+                  <TextInput placeholder="Store name" className="w-96" {...form.getInputProps("storeName")}/>
+                  <PasswordInput placeholder="Password" className="w-96" {...form.getInputProps("password")}/>
                 </Stack>
               </Tabs.Panel>
               <Stack mt={rem(20)}>
                 <Button
+                  type="submit"
                   styles={(theme) => ({
                     root: {
                       backgroundColor: theme.colors.red[9],
