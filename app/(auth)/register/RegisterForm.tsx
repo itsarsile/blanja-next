@@ -17,7 +17,7 @@ import axios from "axios";
 
 export default function RegisterForm() {
   const [activeTab, setActiveTab] = useState<string | null>("customer");
-
+  const [isLoading, setIsLoading] = useState(false)
   const form = useForm({
     initialValues: {
       email: "",
@@ -32,7 +32,9 @@ export default function RegisterForm() {
   const onSubmit = form.onSubmit(async (values) => {
     await axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}/register/api`, values)
-      .then((response) => alert("Success! Register"))
+      .then((_) => {
+          setIsLoading(false)
+        }) 
       .catch((error) => console.error(error));
   });
 

@@ -13,6 +13,7 @@ import {
   rem,
 } from "@mantine/core";
 import { Search } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -31,6 +32,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function NavigationBar() {
+  const {data, status, update} = useSession()
   const { classes, theme } = useStyles();
   const [opened, setOpened] = useState(false);
   return (
@@ -45,8 +47,10 @@ export default function NavigationBar() {
             w={rem(500)}
           />
           <Group>
+            { session.status === "unauthenticated" ? (
+              <>
             <Link href="/login">
-            <Button radius="xl" color="red.6" w={rem(100)}>
+            <Button radius="xl" className="bg-red-600" color="red.6" w={rem(100)}>
               Login
             </Button>
             </Link>
@@ -55,6 +59,10 @@ export default function NavigationBar() {
               Sign Up
             </Button>
             </Link>
+              </>
+            ) : (
+              <div>{session}</div>
+            )}
           </Group>
         </Group>
         <Group position="apart" className={`${classes.hiddenDesktop} w-full`}>

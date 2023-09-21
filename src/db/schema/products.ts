@@ -23,6 +23,7 @@ export const products = pgTable(
   {
     id: serial("id").primaryKey(),
     name: text("name").notNull(),
+    image: text("image").notNull(),
     brand: text("brand").notNull(),
     description: text("description").notNull(),
     price: integer("price").notNull(),
