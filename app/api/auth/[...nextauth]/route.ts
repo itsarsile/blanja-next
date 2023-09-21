@@ -51,7 +51,10 @@ export const authOptions: AuthOptions = {
           const u = user as unknown as any;
           return {
             ...token,
+            id: u.userWithoutPassword.id,
             role: u.userWithoutPassword.role,
+            name: u.userWithoutPassword.name,
+            verified: u.userWithoutPassword.verified
           };
         }
         return token;
@@ -61,14 +64,17 @@ export const authOptions: AuthOptions = {
           ...session,
           user: {
             ...session.user,
+            id: token.id,
             role: token.role,
+            name: token.name,
+            verfiied: token.verified,
           },
         };
       },
     },
   }
 
-  
+
 const handler = NextAuth(authOptions);
 
 

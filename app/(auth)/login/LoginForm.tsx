@@ -27,14 +27,12 @@ export default function LoginForm() {
 
   const onSubmit = form.onSubmit(async (values, _event) => {
     try {
-      const res = await signIn("credentials", {
+      await signIn("credentials", {
         email: values.email,
         password: values.password,
-      });
-      if (!res?.ok) {
-        alert("Login successfull!");
-      }
-      console.log(res);
+      })
+        .then(() => alert("Login successful"))
+        .catch(() => alert("Invalid credentials"));
     } catch (error) {
       alert("Error while logging in");
     }
@@ -121,7 +119,7 @@ export default function LoginForm() {
                     },
                   })}
                   unstyled
-                  className="w-full h-12 rounded-full"
+                  className="w-full h-12 rounded-full bg-red-600"
                   type="submit"
                 >
                   Login
