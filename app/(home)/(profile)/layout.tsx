@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { SWRConfig } from "swr"
 
 export default async function ProfileLayout({
   children,

@@ -11,20 +11,9 @@ export async function POST(request: NextRequest) {
 
     const [user] = await db.select().from(users).where(eq(users.email, email));
 
-    if (!user) {
-      return NextResponse.json({ message: "User not found!" }, { status: 404 });
-    }
-
-    if (!password) {
+    if (!user || !password || (await bcrypt.compare(user.password, password))) {
       return NextResponse.json(
-        { message: "Password is required!" },
-        { status: 400 }
-      );
-    }
-
-    if (!user.password || (await bcrypt.compare(user.password, password))) {
-      return NextResponse.json(
-        { message: "Incorrect Password" },
+        { message: "Invalid email or password" },
         { status: 401 }
       );
     }
@@ -37,10 +26,10 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: "Error while logging in!" },
       { status: 500 }
     );
-    console.error(error);
   }
 }

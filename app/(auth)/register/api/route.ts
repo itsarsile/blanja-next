@@ -53,7 +53,7 @@ export async function POST(request: Request) {
         );
       }
 
-      await sendEmail({
+      const res = await sendEmail({
         to: registerSeller.email,
         subject: "Blanja Account Verification",
         html: `
@@ -63,6 +63,8 @@ export async function POST(request: Request) {
           <p>Jika Anda tidak dapat mengakses tautan di atas, Anda dapat menyalin dan menempel tautan berikut ke browser web Anda: [Tempel Tautan Manual]</p><p>Terima kasih atas partisipasi Anda. Kami berharap Anda dapat menikmati pengalaman belanja yang menyenangkan di Blanja!</p><p>Salam hangat,</p><p>Tim Blanja</p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></div></body></html>
         `,
       });
+      
+      console.log("🚀 ~ file: route.ts:66 ~ POST ~ res:", res)
 
       return NextResponse.json(
         { message: "User created successfully" },

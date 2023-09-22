@@ -98,14 +98,8 @@ export default function RegisterForm() {
               <Stack mt={rem(20)}>
                 <Button
                   type="submit"
-                  styles={(theme) => ({
-                    root: {
-                      backgroundColor: theme.colors.red[9],
-                      color: theme.white,
-                    },
-                  })}
                   unstyled
-                  className="w-full h-12 rounded-full"
+                  className="bg-red-600 text-white w-full h-12 rounded-full"
                 >
                   Register
                 </Button>

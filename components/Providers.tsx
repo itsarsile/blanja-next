@@ -5,8 +5,6 @@ import { CacheProvider } from "@emotion/react";
 import React from "react";
 import { SessionProvider } from "next-auth/react";
 
-
-
 export default function Providers({ children }: { children: React.ReactNode }) {
   const cache = useEmotionCache();
   cache.compat = true;
@@ -23,9 +21,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <CacheProvider value={cache}>
       <MantineProvider theme={{ colorScheme: "light" }}>
-        <SessionProvider>
-        {children}
-        </SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </MantineProvider>
     </CacheProvider>
   );

@@ -39,7 +39,7 @@ export default function NavigationBar() {
   const { classes, theme } = useStyles();
   const [opened, setOpened] = useState(false);
   return (
-    <Header height={{ base: 70 }} className="shadow-xl z-10">
+    <Header height={{ base: 70 }} className="shadow-xl" zIndex={10}>
       <Container className="flex items-center h-full">
         <Group className={`${classes.hiddenMobile} w-full`} position="apart">
           <Link href="/">

@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, serial, uuid } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, serial, timestamp, uuid } from "drizzle-orm/pg-core";
 import { carts } from "./carts";
 import { addresses } from "./addresses";
 
@@ -8,5 +8,6 @@ export const orders = pgTable('orders', {
     id: uuid('id').primaryKey(),
     cart_id: uuid('cart_id').references(() => carts.id),
     status: orderStatusEnum('order_status'),
-    address: serial('id').references(() => addresses.id)
+    address: serial('id').references(() => addresses.id),
+    created_at: timestamp('created_at', { withTimezone: true }).defaultNow()
 })

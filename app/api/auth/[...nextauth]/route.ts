@@ -31,7 +31,10 @@ export const authOptions: AuthOptions = {
             }),
             headers: { "Content-Type": "application/json" },
           });
+
           const user = await res.json();
+          console.log("🚀 ~ file: route.ts:35 ~ authorize ~ user:", user)
+          console.log("🚀 ~ file: route.ts:40 ~ authorize ~ res.ok:", res.ok)
   
           // If no error and we have user data, return it
           if (res.ok && user) {
@@ -46,6 +49,11 @@ export const authOptions: AuthOptions = {
       strategy: "jwt",
     },
     callbacks: {
+      async redirect({url, baseUrl}) {
+        if (url.startsWith("/")) return `${baseUrl}${url}`
+        else if (new URL(url).origin === baseUrl) return url
+        return baseUrl
+      },
       async jwt({ token, user, account }) {
         if (user) {
           const u = user as unknown as any;
@@ -60,6 +68,7 @@ export const authOptions: AuthOptions = {
         return token;
       },
       async session({ session, token, user }) {
+        console.log("🚀 ~ file: route.ts:66 ~ session ~ user:", user)
         return {
           ...session,
           user: {

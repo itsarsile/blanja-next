@@ -16,6 +16,8 @@ import {
     email: text('email').notNull().unique(),
     name: text('name'),
     role: userRoleEnum('role'),
+    gender: text('gender'),
+    phone_number: text('phone_number'),
     avatar: text('avatar'),
     password: text('password').notNull(),
     verified: boolean('verified').default(false),

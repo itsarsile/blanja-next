@@ -2,6 +2,7 @@
 import {
   Button,
   Center,
+  Loader,
   PasswordInput,
   Stack,
   Tabs,
@@ -9,15 +10,18 @@ import {
   TextInput,
   rem,
 } from "@mantine/core";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useForm } from "@mantine/form";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const { status } = useSession();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -27,20 +31,38 @@ export default function LoginForm() {
 
   const onSubmit = form.onSubmit(async (values, _event) => {
     try {
-      await signIn("credentials", {
+      setLoading(true);
+      const res = await signIn("credentials", {
         email: values.email,
         password: values.password,
-      })
-        .then(() => alert("Login successful"))
-        .catch(() => alert("Invalid credentials"));
+        callbackUrl: '/',
+        redirect: false,
+      });
+      console.log("🚀 ~ file: LoginForm.tsx:38 ~ onSubmit ~ res:", res)
+
+      if (!res?.error) {
+        alert("Login successful");
+        router.replace("/")
+      } else {
+        setLoading(false);
+        alert("Login failed");
+      }
     } catch (error) {
       alert("Error while logging in");
+    } finally {
+      setLoading(false);
     }
   });
   return (
     <Center className="h-screen">
       <Stack align="center">
-        <Image src="/blanja.svg" alt="blanja-logo" width={135} height={50} />
+        <Image
+          priority
+          src="/blanja.svg"
+          alt="blanja-logo"
+          width={135}
+          height={50}
+        />
         <p>Please login with your account</p>
         <Tabs
           unstyled
@@ -112,6 +134,7 @@ export default function LoginForm() {
                   Forgot Password?
                 </Text>
                 <Button
+                  disabled={loading ? true : false}
                   styles={(theme) => ({
                     root: {
                       backgroundColor: theme.colors.red[9],
@@ -122,7 +145,16 @@ export default function LoginForm() {
                   className="w-full h-12 rounded-full bg-red-600"
                   type="submit"
                 >
-                  Login
+                  {loading ? (
+                    <Loader
+                      className="mx-auto"
+                      color="white"
+                      size="xs"
+                      variant="bars"
+                    />
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
                 <Text className="flex gap-1 justify-center">
                   Don&apos;t have a Blanja account?{" "}

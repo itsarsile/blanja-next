@@ -22,6 +22,27 @@
       "when": 1695231272094,
       "tag": "0002_boring_ben_parker",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1695317968547,
+      "tag": "0003_numerous_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1695318677611,
+      "tag": "0004_bitter_mulholland_black",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1695318740196,
+      "tag": "0005_thankful_morlun",
+      "breakpoints": true
     }
   ]
 }
