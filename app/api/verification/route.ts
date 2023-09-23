@@ -1,8 +1,6 @@
-import { users } from "@/drizzle/schema";
 import db from "@/src/db";
-import crypto from "crypto";
-import { sendEmail } from "@/src/utils/nodemailer";
-import { and, eq, sql } from "drizzle-orm";
+import { users } from "@/src/db/schema/users";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -15,7 +13,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });
     }
 
-
     const [verifiedUser] = await db
       .update(users)
       .set({
@@ -24,10 +21,14 @@ export async function GET(request: NextRequest) {
       .where(
         and(
           eq(users.email, emailParam),
-          eq(users.verificationCode, verificationCode)
+          eq(users.verification_code, verificationCode)
         )
-      ).returning({ verified: users.verified });
-    console.log("🚀 ~ file: route.ts:34 ~ GET ~ userVerificationCode:", verifiedUser)
+      )
+      .returning({ verified: users.verified });
+    console.log(
+      "🚀 ~ file: route.ts:34 ~ GET ~ userVerificationCode:",
+      verifiedUser
+    );
 
     if (!verifiedUser) {
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });

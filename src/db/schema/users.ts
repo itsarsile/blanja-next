@@ -7,6 +7,7 @@ import {
     serial,
     boolean,
     pgEnum,
+    date,
   } from "drizzle-orm/pg-core";
   
 
@@ -18,6 +19,7 @@ import {
     role: userRoleEnum('role'),
     gender: text('gender'),
     phone_number: text('phone_number'),
+    date_of_birth: date('date_of_birth'),
     avatar: text('avatar'),
     password: text('password').notNull(),
     verified: boolean('verified').default(false),

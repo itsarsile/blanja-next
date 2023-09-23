@@ -1,7 +1,16 @@
 "use client";
 
 import { fetcher } from "@/src/utils/fetcher";
-import { Avatar, Group, Navbar, Stack } from "@mantine/core";
+import {
+  Accordion,
+  Avatar,
+  Collapse,
+  Group,
+  Navbar,
+  Stack,
+  UnstyledButton,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { Clipboard, MapPin, PencilIcon, User, UserCircle2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -10,27 +19,29 @@ import React from "react";
 import useSWR from "swr";
 
 export default function Sidebar() {
+  const [opened, { toggle }] = useDisclosure(false);
   const pathname = usePathname();
   console.log(pathname.startsWith("/edit-profile"));
-  const { data } = useSession();
+  const { data, update } = useSession();
 
-  const { data: usersData, isLoading } = useSWR(`/api/users/${data?.user.id}`, fetcher);
-  
+  const { data: usersData, isLoading } = useSWR(
+    `/api/users/${data?.user.id}`,
+    fetcher
+  );
+
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  const user = usersData.userWithoutPassword
-  console.log("🚀 ~ file: Sidebar.tsx:24 ~ Sidebar ~ user:", user)
-  
-  
+  const user = usersData.userWithoutPassword;
+
   return (
     <Navbar className="w-80 p-10" zIndex={-10} width={{ base: 300 }}>
       <Navbar.Section>
         <div className="flex items-center gap-5">
           <Avatar size="xl" radius="xl" />
           <div className="flex flex-col">
-            <p className="font-bold">{user.name}</p>
+            <p className="font-bold">{user?.name}</p>
             <p className="text-xs flex items-center gap-1 text-slate-400">
               <PencilIcon className="w-3" />
               Ubah Profil
@@ -43,14 +54,20 @@ export default function Sidebar() {
           <Stack spacing="xl">
             <Link href={`/edit-profile/${data?.user.id}`}>
               <Group>
-                <div className="bg-blue-600 p-2 rounded-full text-white">
+                <div
+                  className={
+                    pathname.startsWith("/edit-profile")
+                      ? "bg-blue-600 p-2 rounded-full text-white transition-all ease-in-out ring-2"
+                      : "bg-blue-600 p-2 rounded-full text-white"
+                  }
+                >
                   <User />
                 </div>
                 <p
                   className={
                     pathname.startsWith("/edit-profile")
-                      ? "font-bold"
-                      : "text-slate-500"
+                      ? "font-bold transition-all ease-in-out"
+                      : "text-slate-500 transition-all ease-in-out"
                   }
                 >
                   My Account
@@ -89,6 +106,35 @@ export default function Sidebar() {
                 </p>
               </Group>
             </Link>
+            {data?.user.role === "seller" && (
+              <>
+                <UnstyledButton onClick={toggle}>
+                  <Group>
+                    <div className="p-2 rounded-full text-white bg-pink-400">
+                      <Clipboard />
+                    </div>
+                    <p
+                      className={
+                        pathname.startsWith("/my-orders")
+                          ? "font-bold transition-all ease-in-out"
+                          : "text-slate-500"
+                      }
+                    >
+                      My Order
+                    </p>
+                  </Group>
+                </UnstyledButton>
+                <Collapse
+                  in={opened}
+                  transitionDuration={1000}
+                  transitionTimingFunction="ease-in"
+                >
+                  <div className="border-l-2">
+                    <p className="ml-8 pl-8">Collapsed content</p>
+                  </div>
+                </Collapse>
+              </>
+            )}
           </Stack>
         </div>
       </Navbar.Section>

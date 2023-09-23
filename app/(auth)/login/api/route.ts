@@ -1,4 +1,4 @@
-import { users } from "@/drizzle/schema";
+import { users } from "@/src/db/schema/users";
 import db from "@/src/db";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { message: "Error while logging in!" },
       { status: 500 }
