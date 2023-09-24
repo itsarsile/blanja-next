@@ -4,6 +4,8 @@ import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
+import { modals } from "./modals/Modals";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const cache = useEmotionCache();
@@ -20,10 +22,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <CacheProvider value={cache}>
-      <MantineProvider theme={{ colorScheme: "light" }}>
-        <Notifications />
-        <SessionProvider>{children}</SessionProvider>
-      </MantineProvider>
+      <SessionProvider>
+        <MantineProvider theme={{ colorScheme: "light" }}>
+          <ModalsProvider modals={modals}>
+            <Notifications />
+            {children}
+          </ModalsProvider>
+        </MantineProvider>
+      </SessionProvider>
     </CacheProvider>
   );
 }

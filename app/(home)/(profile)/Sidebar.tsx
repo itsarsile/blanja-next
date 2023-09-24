@@ -1,7 +1,7 @@
 "use client";
 
 import { fetcher } from "@/src/utils/fetcher";
-import { Avatar, Group, Navbar, Stack } from "@mantine/core";
+import { Avatar, Group, Navbar, ScrollArea, Stack } from "@mantine/core";
 import {
   Box,
   Clipboard,
@@ -46,8 +46,8 @@ export default function Sidebar() {
       icon: Box,
       iconClassName: "bg-red-600 text-white p-2 rounded-full",
       links: [
-        { label: "My Products", link: `/products/${user?.id}` },
-        { label: "Sell Product", link: `/products/sell/${user?.id}` },
+        { label: "My Products", link: `/products/${user?.id}/my-products` },
+        { label: "Sell Product", link: `/products/${user?.id}/sell` },
       ],
     },
     {
@@ -63,6 +63,7 @@ export default function Sidebar() {
   ));
 
   return (
+    <ScrollArea>
     <Navbar className="w-80 p-10" zIndex={-10} width={{ base: 300 }}>
       <Navbar.Section>
         <div className="flex items-center gap-5">
@@ -144,39 +145,12 @@ export default function Sidebar() {
             {data?.user.role === "seller" && (
               <>
                 {StoreLinks}
-                {/* <UnstyledButton onClick={toggle}>
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 rounded-full text-white bg-green-400">
-                      <Store />
-                    </div>
-                    <p
-                      className={
-                        pathname.startsWith("/my-orders")
-                          ? "font-bold transition-all ease-in-out"
-                          : "text-slate-500"
-                      }
-                    >
-                      Store
-                    </p>
-                    <ChevronDown className="justify-end"/>
-                  </div>
-                </UnstyledButton>
-                <Collapse
-                  in={opened}
-                  transitionDuration={100}
-                  transitionTimingFunction="ease-in-out"
-                >
-                  <Stack>
-                    <div className="pl-14">
-                      <p>Store Profile</p>
-                    </div>
-                  </Stack>
-                </Collapse> */}
               </>
             )}
           </Stack>
         </div>
       </Navbar.Section>
     </Navbar>
+    </ScrollArea>
   );
 }

@@ -2,12 +2,10 @@ import {
   foreignKey,
   integer,
   pgTable,
-  primaryKey,
   real,
   serial,
   text,
-  timestamp,
-  uuid,
+  timestamp
 } from "drizzle-orm/pg-core";
 import { store_profile } from "./users";
 
@@ -24,6 +22,7 @@ export const products = pgTable("products", {
   description: text("description").notNull(),
   price: integer("price").notNull(),
   stock: integer("stock").notNull(),
+  conditions: text("conditions").notNull(),
   rating: real("rating"),
   category_id: integer("category_id").references(() => categories.id),
   store_id: integer("store_id").references(() => store_profile.id),
