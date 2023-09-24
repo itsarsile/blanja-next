@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   try {
     const requestBody = await request.json();
     const { email, password, role } = requestBody;
-    console.log("🚀 ~ file: route.ts:12 ~ POST ~ email:", email);
 
     const verifyCode = crypto.randomBytes(32).toString("hex");
     
@@ -20,7 +19,6 @@ export async function POST(request: Request) {
 
     const hashedPassword = await hash(password, 10);
 
-    console.log("🚀 ~ file: route.ts:10 ~ POST ~ role:", role);
 
     if (role === "seller") {
       const { storeName, phoneNumber, name } = requestBody;
@@ -64,7 +62,6 @@ export async function POST(request: Request) {
         `,
       });
       
-      console.log("🚀 ~ file: route.ts:66 ~ POST ~ res:", res)
 
       return NextResponse.json(
         { message: "User created successfully" },
@@ -108,7 +105,6 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:76 ~ POST ~ error:", error);
     return NextResponse.json(
       { message: "Error when registering user." },
       { status: 500 }

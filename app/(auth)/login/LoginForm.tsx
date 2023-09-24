@@ -16,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -38,17 +39,22 @@ export default function LoginForm() {
         callbackUrl: '/',
         redirect: false,
       });
-      console.log("🚀 ~ file: LoginForm.tsx:38 ~ onSubmit ~ res:", res)
 
       if (!res?.error) {
-        alert("Login successful");
+        notifications.show({
+          message: "Login successful"
+        })
         router.replace("/")
       } else {
         setLoading(false);
-        alert("Login failed");
+        notifications.show({
+          message: "Login failed"
+        })
       }
     } catch (error) {
-      alert("Error while logging in");
+      notifications.show({
+        message: "Login failed"
+      })
     } finally {
       setLoading(false);
     }

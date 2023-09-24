@@ -25,10 +25,6 @@ export async function GET(request: NextRequest) {
         )
       )
       .returning({ verified: users.verified });
-    console.log(
-      "🚀 ~ file: route.ts:34 ~ GET ~ userVerificationCode:",
-      verifiedUser
-    );
 
     if (!verifiedUser) {
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });
@@ -36,7 +32,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ message: "Email verified successfully!" });
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:14 ~ GET ~ error:", error);
     return NextResponse.json({ message: "Error sending email" });
   }
 }

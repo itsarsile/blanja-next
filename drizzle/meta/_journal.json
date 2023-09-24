@@ -8,6 +8,20 @@
       "when": 1695470109377,
       "tag": "0000_flawless_cerebro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1695489675709,
+      "tag": "0001_funny_the_hood",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1695489721891,
+      "tag": "0002_long_mordo",
+      "breakpoints": true
     }
   ]
 }

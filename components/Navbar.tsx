@@ -1,4 +1,5 @@
 "use client";
+import { fetcher } from "@/src/utils/fetcher";
 import {
   ActionIcon,
   Avatar,
@@ -20,6 +21,7 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import useSWR from "swr";
 
 const useStyles = createStyles((theme) => ({
   hiddenMobile: {
@@ -36,6 +38,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function NavigationBar() {
   const { data, status, update } = useSession();
+  const { data: usersData } = useSWR(`/api/users/${data?.user.id}`, fetcher);
   const { classes, theme } = useStyles();
   const [opened, setOpened] = useState(false);
   return (
@@ -43,7 +46,13 @@ export default function NavigationBar() {
       <Container className="flex items-center h-full">
         <Group className={`${classes.hiddenMobile} w-full`} position="apart">
           <Link href="/">
-          <Image priority src="/blanja.svg" width={73} height={20} alt="blanja-logo" />
+            <Image
+              priority
+              src="/blanja.svg"
+              width={73}
+              height={20}
+              alt="blanja-logo"
+            />
           </Link>
           <TextInput
             placeholder="Search"
@@ -77,24 +86,26 @@ export default function NavigationBar() {
               </>
             ) : (
               <>
-              <div className="text-gray-400 flex gap-5">
-              <Mail className="w-6 h-6"/>
-              <Bell className="w-6 h-6"/>
-              <ShoppingCart className="w-6 h-6"/>
-                <Menu withArrow shadow="lg">
-                  <Menu.Target>
-                    <ActionIcon>
-                      <Avatar radius="xl"/>
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Link href={`/edit-profile/${data?.user.id}`}>
-                     <Menu.Item>Profile</Menu.Item>
-                    </Link>
-                    <Menu.Item component="button" onClick={() => signOut()}>Logout</Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </div>
+                <div className="text-gray-400 flex gap-5">
+                  <Mail className="w-6 h-6" />
+                  <Bell className="w-6 h-6" />
+                  <ShoppingCart className="w-6 h-6" />
+                  <Menu withArrow shadow="lg" width={rem(150)}>
+                    <Menu.Target>
+                      <ActionIcon>
+                        <Avatar radius="xl" src={usersData && usersData?.userWithoutPassword?.avatar}/>
+                      </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Link href={`/edit-profile/${data?.user.id}`}>
+                        <Menu.Item>Profile</Menu.Item>
+                      </Link>
+                      <Menu.Item component="button" onClick={() => signOut()}>
+                        Logout
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
+                </div>
               </>
             )}
           </Group>

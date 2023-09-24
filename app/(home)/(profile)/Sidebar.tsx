@@ -1,27 +1,24 @@
 "use client";
 
 import { fetcher } from "@/src/utils/fetcher";
+import { Avatar, Group, Navbar, Stack } from "@mantine/core";
 import {
-  Accordion,
-  Avatar,
-  Collapse,
-  Group,
-  Navbar,
-  Stack,
-  UnstyledButton,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { Clipboard, MapPin, PencilIcon, User, UserCircle2 } from "lucide-react";
+  Box,
+  Clipboard,
+  MapPin,
+  PencilIcon,
+  ShoppingBasket,
+  Store,
+  User,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 import useSWR from "swr";
+import { LinksGroup } from "../_components/LinksGroup";
 
 export default function Sidebar() {
-  const [opened, { toggle }] = useDisclosure(false);
   const pathname = usePathname();
-  console.log(pathname.startsWith("/edit-profile"));
   const { data, update } = useSession();
 
   const { data: usersData, isLoading } = useSWR(
@@ -35,11 +32,49 @@ export default function Sidebar() {
 
   const user = usersData.userWithoutPassword;
 
+  const storeMenu = [
+    {
+      label: "Store",
+      icon: Store,
+      iconClassName: "bg-cyan-600 text-white p-2 rounded-full",
+      links: [
+        { label: "Store Profile", link: `/edit-store-profile/${user?.id}` },
+      ],
+    },
+    {
+      label: "Product",
+      icon: Box,
+      iconClassName: "bg-red-600 text-white p-2 rounded-full",
+      links: [
+        { label: "My Products", link: `/products/${user?.id}` },
+        { label: "Sell Product", link: `/products/sell/${user?.id}` },
+      ],
+    },
+    {
+      label: "Order",
+      icon: ShoppingBasket,
+      iconClassName: "bg-green-600 text-white p-2 rounded-full",
+      links: [{ label: "My order", link: `/orders/${user?.id}` }],
+    },
+  ];
+
+  const StoreLinks = storeMenu.map((item) => (
+    <LinksGroup {...item} key={item.label} pathName={pathname} />
+  ));
+
   return (
     <Navbar className="w-80 p-10" zIndex={-10} width={{ base: 300 }}>
       <Navbar.Section>
         <div className="flex items-center gap-5">
-          <Avatar size="xl" radius="xl" />
+          <Avatar
+            size="xl"
+            src={user?.avatar}
+            styles={{
+              root: {
+                borderRadius: "100%",
+              },
+            }}
+          />
           <div className="flex flex-col">
             <p className="font-bold">{user?.name}</p>
             <p className="text-xs flex items-center gap-1 text-slate-400">
@@ -108,10 +143,11 @@ export default function Sidebar() {
             </Link>
             {data?.user.role === "seller" && (
               <>
-                <UnstyledButton onClick={toggle}>
-                  <Group>
-                    <div className="p-2 rounded-full text-white bg-pink-400">
-                      <Clipboard />
+                {StoreLinks}
+                {/* <UnstyledButton onClick={toggle}>
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 rounded-full text-white bg-green-400">
+                      <Store />
                     </div>
                     <p
                       className={
@@ -120,19 +156,22 @@ export default function Sidebar() {
                           : "text-slate-500"
                       }
                     >
-                      My Order
+                      Store
                     </p>
-                  </Group>
+                    <ChevronDown className="justify-end"/>
+                  </div>
                 </UnstyledButton>
                 <Collapse
                   in={opened}
-                  transitionDuration={1000}
-                  transitionTimingFunction="ease-in"
+                  transitionDuration={100}
+                  transitionTimingFunction="ease-in-out"
                 >
-                  <div className="border-l-2">
-                    <p className="ml-8 pl-8">Collapsed content</p>
-                  </div>
-                </Collapse>
+                  <Stack>
+                    <div className="pl-14">
+                      <p>Store Profile</p>
+                    </div>
+                  </Stack>
+                </Collapse> */}
               </>
             )}
           </Stack>

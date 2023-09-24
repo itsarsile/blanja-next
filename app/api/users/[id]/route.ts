@@ -42,7 +42,6 @@ export async function PUT(
 
       return NextResponse.json({message: "Success updating user", data: updatedUser});
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:45 ~ error:", error)
     return NextResponse.json(
       { message: "Error while updating user" },
       { status: 500 }

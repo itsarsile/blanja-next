@@ -1,0 +1,1 @@
+ALTER TABLE "store_profile" ADD COLUMN "store_avatar" text;

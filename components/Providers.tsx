@@ -2,8 +2,8 @@
 import { MantineProvider, useEmotionCache } from "@mantine/core";
 import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider } from "@emotion/react";
-import React from "react";
 import { SessionProvider } from "next-auth/react";
+import { Notifications } from "@mantine/notifications";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const cache = useEmotionCache();
@@ -21,6 +21,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <CacheProvider value={cache}>
       <MantineProvider theme={{ colorScheme: "light" }}>
+        <Notifications />
         <SessionProvider>{children}</SessionProvider>
       </MantineProvider>
     </CacheProvider>

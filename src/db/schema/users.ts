@@ -30,7 +30,10 @@ import {
     id: serial('id').primaryKey(),
     store_name: text('store_name').notNull(),
     store_phone: text('store_phone').notNull(),
-    user_id: integer('user_id').references(() => users.id)
+    store_description: text("store_description"),
+    store_email: text("store_email"),
+    store_avatar: text("store_avatar"),
+    user_id: integer('user_id').references(() => users.id),
   })
 
 

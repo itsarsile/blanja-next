@@ -33,8 +33,6 @@ export const authOptions: AuthOptions = {
           });
 
           const user = await res.json();
-          console.log("🚀 ~ file: route.ts:35 ~ authorize ~ user:", user)
-          console.log("🚀 ~ file: route.ts:40 ~ authorize ~ res.ok:", res.ok)
   
           // If no error and we have user data, return it
           if (res.ok && user) {
@@ -68,7 +66,6 @@ export const authOptions: AuthOptions = {
         return token;
       },
       async session({ session, token, user }) {
-        console.log("🚀 ~ file: route.ts:66 ~ session ~ user:", user)
         return {
           ...session,
           user: {
