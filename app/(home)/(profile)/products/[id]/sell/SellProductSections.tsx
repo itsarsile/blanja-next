@@ -21,7 +21,7 @@ export default function SellProductSections({
   const category = categories.map(category => {
       return category.name
     })
-    console.log("🚀 ~ file: SellProductSections.tsx:22 ~ category:", category)
+
   return (
     <form>
       <Stack>
@@ -44,7 +44,7 @@ export default function SellProductSections({
               <NumberInput label="Unit price" />
               <NumberInput
                 label="Stock"
-                rightSection={<span className="pr-6">Buah</span>}
+                rightSection={<span className="pr-6 text-slate-400">Buah</span>}
               />
             </Stack>
           </Stack>
