@@ -23,7 +23,7 @@ export const authOptions: AuthOptions = {
           // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
           // You can also use the `req` object to obtain additional parameters
           // (i.e., the request IP address)
-          const res = await fetch("http://localhost:3000/login/api", {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login/api`, {
             method: "POST",
             body: JSON.stringify({
               email: credentials?.email,
