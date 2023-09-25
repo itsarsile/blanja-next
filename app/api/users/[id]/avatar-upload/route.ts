@@ -46,7 +46,6 @@ export async function POST(
       const { data, error } = await supabase.storage.from("avatar").remove([avatarPath])
     }
 
-    console.log("🚀 ~ file: route.ts:40 ~ avatar:", avatar)
 
     const fileExt = f.name.split(".")[1];
     const fileName = f.name.split(".")[0];
@@ -62,7 +61,6 @@ export async function POST(
       const { data: publicAvatarUrl } = await supabase.storage
         .from("avatar")
         .getPublicUrl(uploadedData.path);
-      console.log(publicAvatarUrl.publicUrl);
 
       await db
         .update(users)
@@ -81,7 +79,6 @@ export async function POST(
       );
     }
   } catch (error) {
-    console.log("🚀 ~ file: route.ts:52 ~ error:", error);
     return NextResponse.json(
       { message: "Error while uploading avatar!", error: error },
       { status: 500 }

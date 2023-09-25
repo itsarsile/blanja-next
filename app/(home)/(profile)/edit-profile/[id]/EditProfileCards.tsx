@@ -21,7 +21,6 @@ import { mutate } from "swr";
 export default function EditProfileCards({ user }: { user: any }) {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log(user);
   const form = useForm({
     initialValues: {
       name: user?.name,
