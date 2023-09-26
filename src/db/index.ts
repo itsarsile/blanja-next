@@ -2,11 +2,11 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 
 export const client =  postgres({
-    host: "db.dqdocfvsmxugjouyvawx.supabase.co",
-    database: "postgres",
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
     port: 6543,
-    user: "postgres",
-    pass: "nVYNp7fkti6nXIAJ",
+    user: process.env.DB_USER,
+    pass: process.env.DB_PASS,
     idle_timeout: 20,
     max_lifetime: 60 * 30,
     max: 1,
