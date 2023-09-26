@@ -67,7 +67,7 @@ export default function SellProductSections({
       const { data: upload, error } = await supabase.storage
         .from("products")
         .upload(
-          `products/${fileName + "-" + Date.now().toString() + "." + fileExt}`,
+          `product/${fileName + "-" + Date.now().toString() + "." + fileExt}`,
           file
         );
 
@@ -94,6 +94,8 @@ export default function SellProductSections({
 
       if (res.ok) {
         mutate("/api/products");
+        mutate("/api/products/all")
+        setFile(null)
         form.reset()
         notifications.show({
           message: "Success added new product!",

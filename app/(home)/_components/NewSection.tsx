@@ -1,7 +1,10 @@
 "use client";
+import { fetcher } from "@/src/utils/fetcher";
 import { Card, Grid, Group, Rating, Stack } from "@mantine/core";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import useSWR from "swr";
 
 interface ProductCardProps {
   id: number;
@@ -9,7 +12,7 @@ interface ProductCardProps {
   alt: string;
   width: number;
   height: number;
-  title: string;
+  name: string;
   price: number;
   brand: string;
   rating: number;
@@ -17,23 +20,25 @@ interface ProductCardProps {
 }
 
 const ProductCards = ({
+  id,
   image,
   alt,
   width,
   height,
-  title,
+  name,
   price,
   brand,
   rating,
   totalRating,
 }: ProductCardProps) => {
   return (
+    <Link href={`/products/${id}`}>
     <Card shadow="lg">
       <Card.Section>
-        <Image src={image} alt={alt} width={width} height={height} />
+        <Image src={image} alt={alt} width={width} height={height} className="object-cover"/>
       </Card.Section>
       <Stack spacing={3} mt={10}>
-        <p className="font-medium">{title}</p>
+        <p className="font-medium">{name.substring(0, 30)}...</p>
         <p>Rp. {price}</p>
         <p className="text-slate-400">{brand}</p>
         <Group spacing={2}>
@@ -42,100 +47,32 @@ const ProductCards = ({
         </Group>
       </Stack>
     </Card>
+    </Link>
   );
 };
 
-export default function NewSection() {
+export default function ProductsGrid({title, subtitle}: {title: string, subtitle: string}) {
+  const { data, isLoading } = useSWR('/api/products/all', fetcher)
 
-  const products = productData.map((product) => (
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  console.log(data.products)
+  const products = data.products.map((product: any) => (
     <Grid.Col lg={3} key={product.id}>
-      <ProductCards {...product} />
+      <ProductCards {...product} width={1080} height={1080}/>
     </Grid.Col>
   ));
   return (
     <section className="mt-10">
       <Stack spacing={2}>
-        <p className="font-bold text-4xl text-gray-800">New</p>
+        <p className="font-bold text-4xl text-gray-800">{title}</p>
         <p className="text-gray-500 font-thin">
-          You&apos;ve never seen it before!
+          {subtitle}
         </p>
       </Stack>
       <Grid mt={5}>{products}</Grid>
     </section>
   );
 }
-
-const productData: ProductCardProps[] = [
-  {
-    id: 1,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-  {
-    id: 2,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-  {
-    id: 3,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-  {
-    id: 4,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-  {
-    id: 5,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-  {
-    id: 6,
-    title: "Men's Formal Black Suit",
-    image: "/product-placeholder.png",
-    alt: "product-placeholder",
-    brand: "Zalora Cloth",
-    width: 400,
-    height: 136,
-    price: 50000,
-    rating: 4,
-    totalRating: 20,
-  },
-];

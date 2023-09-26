@@ -69,11 +69,6 @@ export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
     const userId = Number(session?.user.id);
 
-    const [store_id] = await db
-      .select({ id: store_profile.id })
-      .from(store_profile)
-      .where(eq(store_profile.user_id, userId));
-
     const productData = await db.execute(sql`
       SELECT products.*, categories.name as "category"
       FROM 

@@ -28,9 +28,11 @@ import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
+import { DataTableColumnHeader } from "./table-headers";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export type Products = {
   id: number;
@@ -50,11 +52,39 @@ export type Products = {
 export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "id",
-    header: "Product ID",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Product ID" />
+    ),
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Name" />;
+    },
   },
   {
     accessorKey: "category",
@@ -73,11 +103,38 @@ export const columns: ColumnDef<Products>[] = [
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="text-slate-400"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const price = row.original.price as number;
+      const formattedPrice = `Rp ${price.toLocaleString("id-ID")}`;
+      return <span>{formattedPrice}</span>;
+    },
   },
   {
     accessorKey: "stock",
-    header: "Stock",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="text-slate-400"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Stock
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "rating",
@@ -114,11 +171,11 @@ export const columns: ColumnDef<Products>[] = [
             `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
             {
               method: "DELETE",
-              body: JSON.stringify({productId: product.id}),
+              body: JSON.stringify({ productId: product.id }),
             }
           );
           if (res.ok) {
-            mutate('/api/products')
+            mutate("/api/products");
             notifications.show({
               message: `Product ${product.name.substring(
                 0,
@@ -128,8 +185,8 @@ export const columns: ColumnDef<Products>[] = [
           }
         } catch (error) {
           notifications.show({
-            message: "Error deleting product"
-          })
+            message: "Error deleting product",
+          });
         }
       };
       return (
