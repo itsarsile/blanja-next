@@ -1,4 +1,5 @@
 "use client";
+import { supabase } from "@/src/utils/supabase";
 import {
   Button,
   Divider,
@@ -28,6 +29,7 @@ export default function SellProductSections({
   const [file, setFile] = useState<File | null>(null);
 
   const { data } = useSession();
+  console.log("🚀 ~ file: SellProductSections.tsx:31 ~ data:", data?.user.id);
   // Display category data
   const category = categories.map((category) => {
     return category.name;
@@ -40,12 +42,11 @@ export default function SellProductSections({
       category: "",
       price: "",
       stock: "",
+      image: "",
       description: "",
       conditions: "",
-      userId: data?.user.id,
     },
   });
-
 
   const onSubmit = form.onSubmit(async (values, _event) => {
     _event.preventDefault();
@@ -59,8 +60,26 @@ export default function SellProductSections({
         return;
       }
 
-      const formData = new FormData();
-      formData.append("content", file);
+      // start uploading product image and retrieve get the public url
+      const fileName = file.name.split(".")[0];
+      const fileExt = file.name.split(".")[1];
+
+      const { data: upload, error } = await supabase.storage
+        .from("products")
+        .upload(
+          `products/${fileName + "-" + Date.now().toString() + "." + fileExt}`,
+          file
+        );
+
+      if (upload) {
+        const { data } = await supabase.storage.from("products").getPublicUrl(upload.path)
+        form.values.image = data.publicUrl
+      } else if (error) {
+        notifications.show({
+          message: "Error while uploading file"
+        })
+        console.log(error)
+      }
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
@@ -68,24 +87,14 @@ export default function SellProductSections({
           method: "POST",
           body: JSON.stringify({
             ...values,
-            userId: form.values.userId,
+            userId: data?.user.id,
           }),
         }
       );
 
-      const photo = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          },
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (res.ok && photo.ok) {
+      if (res.ok) {
         mutate("/api/products");
+        form.reset()
         notifications.show({
           message: "Success added new product!",
         });
@@ -135,10 +144,13 @@ export default function SellProductSections({
                 rightSection={<span className="pr-6 text-slate-400">Buah</span>}
                 {...form.getInputProps("stock")}
               />
-              <Radio.Group {...form.getInputProps("conditions")} label="Conditions">
+              <Radio.Group
+                {...form.getInputProps("conditions")}
+                label="Conditions"
+              >
                 <Group>
-                <Radio label="New" value="New" />
-                <Radio label="Second" value="Second" />
+                  <Radio label="New" value="New" />
+                  <Radio label="Second" value="Second" />
                 </Group>
               </Radio.Group>
             </Stack>
