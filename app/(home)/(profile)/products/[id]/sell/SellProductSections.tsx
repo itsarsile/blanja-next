@@ -97,7 +97,7 @@ export default function SellProductSections({
         form.reset()
         notifications.show({
           message: "Success added new product!",
-        });
+      });
       }
     } catch (error) {
       notifications.show({

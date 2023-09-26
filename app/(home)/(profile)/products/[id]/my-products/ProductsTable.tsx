@@ -2,6 +2,7 @@
 import { Divider, Paper, Stack } from "@mantine/core";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import useSWR from "swr";
 
 export default function ProductsTable({data}: any) {
   return (
@@ -12,7 +13,7 @@ export default function ProductsTable({data}: any) {
         <Divider />
       </Stack>
       <div className="pt-10">
-      <DataTable data={data} columns={columns}/>
+      <DataTable data={data} columns={columns} />
       </div>
     </Paper>
   );

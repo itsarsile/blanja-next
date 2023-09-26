@@ -1,7 +1,4 @@
-import React from 'react'
 import { cookies } from 'next/headers'
-import { DataTable } from './data-table'
-import { columns } from './columns'
 import ProductsTable from './ProductsTable'
 
 async function getProducts() {
@@ -23,7 +20,7 @@ export default async function MyProducts() {
  const products = await getProducts()
   return (
     <div className='p-10'>
-      <ProductsTable data={products.productData}/>
+      <ProductsTable data={products.productData} />
     </div>
   )
 }
