@@ -69,8 +69,8 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
+                    key={cell.id}
                     {...{
-                      key: cell.id,
                       style: {
                         width: cell.column.getSize(),
                       },
