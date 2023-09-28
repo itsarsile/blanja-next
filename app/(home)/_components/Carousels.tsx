@@ -3,6 +3,7 @@
 import { Carousel } from "@mantine/carousel";
 import { Paper, rem } from "@mantine/core";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const heroImages = [
@@ -51,48 +52,33 @@ const heroImages = [
 const categoryImages = [
   {
     id: 1,
-    image: "/carousels/category-1.png",
-    alt: "category-1",
+    image: "/carousels/makanan_category.png",
+    alt: "category-makanan",
+    link: "/categories/2"
   },
   {
     id: 2,
-    image: "/carousels/category-2.png",
-    alt: "category-2",
+    image: "/carousels/fashion_category.png",
+    alt: "category-fashion",
+    link: "/categories/1"
   },
   {
     id: 3,
-    image: "/carousels/category-3.png",
-    alt: "category-3",
+    image: "/carousels/teknologi_category.png",
+    alt: "category-teknologi",
+    link: "/categories/3"
   },
   {
     id: 4,
-    image: "/carousels/category-4.png",
-    alt: "category-4",
+    image: "/carousels/obat_category.png",
+    alt: "category-obat",
+    link: "/categories/4"
   },
   {
     id: 5,
-    image: "/carousels/category-5.png",
-    alt: "category-5",
-  },
-  {
-    id: 6,
-    image: "/carousels/category-2.png",
-    alt: "category-2",
-  },
-  {
-    id: 7,
-    image: "/carousels/category-3.png",
-    alt: "category-3",
-  },
-  {
-    id: 8,
-    image: "/carousels/category-4.png",
-    alt: "category-4",
-  },
-  {
-    id: 9,
-    image: "/carousels/category-5.png",
-    alt: "category-5",
+    image: "/carousels/aksesori_category.png",
+    alt: "category-aksesoris",
+    link: "/categories/5"
   },
 ]
 
@@ -119,13 +105,15 @@ export function HeroCarousels() {
 
 export function CategoryCarousels() {
   const slides = categoryImages.map((item) => (
+    <Link href={item.link}>
     <Carousel.Slide key={item.id}>
-      <CarouselCards {...item} width={206} height={220}/>
+      <CarouselCards {...item} width={220} height={220}/>
     </Carousel.Slide>
+    </Link>
   ))
 
   return (
-    <Carousel slideSize="20%" loop slideGap="sm">
+    <Carousel slideSize="20%" loop slidesToScroll={5} slideGap="sm">
       {slides}
     </Carousel>
   )

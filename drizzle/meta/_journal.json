@@ -43,6 +43,41 @@
       "when": 1695582001650,
       "tag": "0005_gorgeous_electro",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1695925423559,
+      "tag": "0006_colorful_mentor",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1695925790329,
+      "tag": "0007_opposite_nuke",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1695925986527,
+      "tag": "0008_many_pyro",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1695926165336,
+      "tag": "0009_wandering_squadron_supreme",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1695926264152,
+      "tag": "0010_serious_otto_octavius",
+      "breakpoints": true
     }
   ]
 }

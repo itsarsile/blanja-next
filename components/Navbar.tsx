@@ -6,11 +6,14 @@ import {
   Burger,
   Button,
   Container,
+  Divider,
   Group,
   Header,
+  HoverCard,
   MediaQuery,
   Menu,
   Navbar,
+  Stack,
   Text,
   TextInput,
   createStyles,
@@ -89,11 +92,35 @@ export default function NavigationBar() {
                 <div className="text-gray-400 flex gap-5">
                   <Mail className="w-6 h-6" />
                   <Bell className="w-6 h-6" />
-                  <ShoppingCart className="w-6 h-6" />
+                  <Group position="center">
+                  <HoverCard width={280} withArrow shadow="xl">
+                    <HoverCard.Target>
+                      <Link href="/my-bag">
+                      <ShoppingCart className="w-6 h-6" />
+                      </Link>
+                    </HoverCard.Target>
+                    <HoverCard.Dropdown className="pt-10">
+                      <Stack spacing={5}>
+                      <Text size="xs">
+                        Shopping Cart
+                        </Text>
+                        <Divider />
+                      </Stack>
+                      <Stack>
+                        
+                      </Stack>
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+                  </Group>
                   <Menu withArrow shadow="lg" width={rem(150)}>
                     <Menu.Target>
                       <ActionIcon>
-                        <Avatar radius="xl" src={usersData && usersData?.userWithoutPassword?.avatar}/>
+                        <Avatar
+                          radius="xl"
+                          src={
+                            usersData && usersData?.userWithoutPassword?.avatar
+                          }
+                        />
                       </ActionIcon>
                     </Menu.Target>
                     <Menu.Dropdown>

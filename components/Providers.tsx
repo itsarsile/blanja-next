@@ -4,6 +4,7 @@ import { useServerInsertedHTML } from "next/navigation";
 import { CacheProvider } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
 import { Notifications } from "@mantine/notifications";
+import { Provider as JotaiProvider } from "jotai";
 import { ModalsProvider } from "@mantine/modals";
 import { modals } from "./modals/Modals";
 
@@ -26,7 +27,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <MantineProvider theme={{ colorScheme: "light" }}>
           <ModalsProvider modals={modals}>
             <Notifications />
-            {children}
+            <JotaiProvider>{children}</JotaiProvider>
           </ModalsProvider>
         </MantineProvider>
       </SessionProvider>

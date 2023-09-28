@@ -14,11 +14,12 @@ import {
 } from "@mantine/core";
 import Image from "next/image";
 import React, { useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { Products } from "../../(profile)/products/[id]/my-products/columns";
 import { Minus, Plus, Star } from "lucide-react";
 import Link from "next/link";
 import { StarFilledIcon } from "@radix-ui/react-icons";
+import { notifications } from "@mantine/notifications";
 
 export default function ProductDetails({ productsId }: { productsId: number }) {
   const [quantity, setQuantity] = useState<number>(0);
@@ -29,7 +30,7 @@ export default function ProductDetails({ productsId }: { productsId: number }) {
   }
 
   const product: Products = data.product;
-
+  
   const items = [
     { title: "Home", href: "/" },
     { title: `${product.name.substring(0, 30)} ...`, href: "#" },
@@ -38,6 +39,25 @@ export default function ProductDetails({ productsId }: { productsId: number }) {
       {item.title}
     </Link>
   ));
+
+
+  const handleAddBag = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product.id}/api/orders`, {
+      method: "POST",
+      body: JSON.stringify({ quantity, productId: product.id })
+    })
+
+    if (res.ok) {
+      mutate('/api/carts')
+      notifications.show({
+        message: "Product added to cart"
+      })
+    } else {
+      notifications.show({
+        message: "Error adding product to cart"
+      })
+    }
+  }
 
   return (
     <div className="py-10">
@@ -118,6 +138,7 @@ export default function ProductDetails({ productsId }: { productsId: number }) {
                 <Button
                   color="gray.6"
                   variant="outline"
+                  onClick={handleAddBag}
                   styles={{
                     root: {
                       width: "100%",
