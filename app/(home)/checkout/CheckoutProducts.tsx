@@ -35,7 +35,7 @@ export default function CheckoutProducts({
   );
 
   const cartItems = carts.cartsData.map((c) => (
-    <Paper className="p-5" shadow="xl" withBorder>
+    <Paper className="p-5" shadow="xl" withBorder key={c.name}>
       <div className="flex justify-between items-center">
         <div className="flex gap-3 items-center">
           <Image
@@ -70,7 +70,7 @@ export default function CheckoutProducts({
   const itemTotalPrice = carts.cartsData.map((c) => {
     const itemPrice = c.price * c.quantity;
     return (
-      <div className="flex justify-between">
+      <div className="flex justify-between" key={c.name}>
         <p>
           {c.name.substring(0, 10)}...{" "}
           <span className="text-sm text-slate-400">x{c.quantity}</span>
