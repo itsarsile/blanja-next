@@ -105,8 +105,8 @@ export function HeroCarousels() {
 
 export function CategoryCarousels() {
   const slides = categoryImages.map((item) => (
-    <Link href={item.link}>
-    <Carousel.Slide key={item.id}>
+    <Link href={item.link} key={item.id}>
+    <Carousel.Slide>
       <CarouselCards {...item} width={220} height={220}/>
     </Carousel.Slide>
     </Link>
