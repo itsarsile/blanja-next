@@ -39,8 +39,8 @@ export default function MyBagCards({
     }
     )
   const cartItems = carts.cartsData.map((c) => (
-    <Paper className="p-5" shadow="xl" withBorder>
-      <div className="flex justify-between items-center" key={c.name}>
+    <Paper className="p-5" shadow="xl" withBorder key={c.name}>
+      <div className="flex justify-between items-center">
         <div className="flex gap-3 items-center">
           <Image
             src={c.image}
