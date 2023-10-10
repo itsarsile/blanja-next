@@ -151,7 +151,7 @@ SUPABASE_ANON_KEY=
 <!-- CONTRIBUTING -->
 
 ## Postman Documentation
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/27920940/2s9YBxYbEq)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/30381931/2s9YJhwexz)
 
 
 ## Contributing
