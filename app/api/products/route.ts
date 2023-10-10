@@ -9,6 +9,9 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import { request } from "http";
 import { deleteExistingImage } from "@/src/utils/deleteExistingImage";
 import { fileUploader } from "@/src/utils/file-upload";
+import { getToken } from "next-auth/jwt";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/lib/jwt";
 
 export async function POST(request: Request) {
   try {
@@ -98,13 +101,13 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session) {
+    const token = cookies().get('token')?.value as string
+    if (!session && !token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const data = await request.formData();
     const formData = Object.fromEntries(Array.from(data.entries()));
-    console.log("🚀 ~ file: route.ts:112 ~ PUT ~ formData:", formData);
 
     if (formData.category) {
       const category = formData.category as string;
@@ -156,8 +159,12 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    const token = cookies().get('token')?.value as string
+    if (!session && !token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
     const { productId } = await request.json();
-    console.log("🚀 ~ file: route.ts:165 ~ DELETE ~ productId:", productId)
     const id = Number(productId);
     await db.delete(products).where(eq(products.id, id));
     return NextResponse.json(

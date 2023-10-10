@@ -150,6 +150,10 @@ SUPABASE_ANON_KEY=
 </table>
 <!-- CONTRIBUTING -->
 
+## Postman Documentation
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/27920940/2s9YBxYbEq)
+
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.

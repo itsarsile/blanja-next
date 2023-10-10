@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { omit } from "lodash";
+import { signJwt } from "@/lib/jwt";
+import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,6 +20,11 @@ export async function POST(request: NextRequest) {
       );
     }
     const userWithoutPassword = omit(user, ["password"]);
+
+    const accessToken = signJwt(userWithoutPassword)
+    
+    cookies().set('token', accessToken)
+
     return NextResponse.json(
       {
         message: "Login successful!",
